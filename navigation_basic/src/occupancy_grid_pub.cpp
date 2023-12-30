@@ -25,9 +25,13 @@ class occupancygrid_pub : public rclcpp::Node
       void occu_grid_callback()
       {
         auto occupancy_grid_msg = nav_msgs::msg::OccupancyGrid();
-        std::vector<signed char> og_array(35);
-        for(int i=0;i<35;i++){
-            og_array[i] = i % 3 == 0 ? 100 : 0 ;
+        std::vector<signed char> og_array(45); //5*9 = 45 (width*height)
+        for(int i=0;i<45;i++){
+            og_array[i] = i % 2 == 0 ? 100 : -1 ; 
+            /* 
+            The ternary operator ? : is used for a conditional expression. 
+            If the condition i % 2 == 0 is true, then og_array[i] is assigned the value 100; otherwise, it is assigned the value 0.
+             */
         }
 
         occupancy_grid_msg.header.stamp = rclcpp::Clock().now();
@@ -36,7 +40,7 @@ class occupancygrid_pub : public rclcpp::Node
         occupancy_grid_msg.info.resolution = 1;
 
         occupancy_grid_msg.info.width = 5;
-        occupancy_grid_msg.info.height = 7;
+        occupancy_grid_msg.info.height = 9;
 
         occupancy_grid_msg.info.origin.position.x = 0.0;
         occupancy_grid_msg.info.origin.position.y = 0.0;
